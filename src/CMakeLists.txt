@@ -14,7 +14,10 @@ target_include_directories(deutsch-text PRIVATE "${CMAKE_SOURCE_DIR}/src")
 target_link_libraries(deutsch-text PRIVATE OpenGL32)
 target_link_libraries(deutsch-text PRIVATE glad)
 target_link_libraries(deutsch-text PRIVATE glfw)
-#target_link_libraries(deutsch-text PRIVATE stb)
+
+# Link in FreeType library
+target_include_directories(deutsch-text PRIVATE "${CMAKE_SOURCE_DIR}/vendor/FreeType/include")
+target_link_libraries(deutsch-text PRIVATE  "${CMAKE_SOURCE_DIR}/vendor/FreeType/freetype.lib")
 
 # Mark the project as C++ 17 and set the output directory.
 set_target_properties(
