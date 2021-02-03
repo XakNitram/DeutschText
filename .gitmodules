@@ -4,6 +4,3 @@
 [submodule "vendor/GLFW"]
 	path = vendor/GLFW
 	url = https://github.com/XakNitram/GLFW-Premake.git
-[submodule "vendor/FreeType"]
-	path = vendor/FreeType
-	url = https://gitlab.freedesktop.org/freetype/freetype.git
