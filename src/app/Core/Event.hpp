@@ -1,5 +1,5 @@
 #pragma once
-#include <variant>
+#include "pch.hpp"
 
 struct KeyboardEvent { int key, scancode, mods; };
 struct TextEvent { unsigned int codepoint; };

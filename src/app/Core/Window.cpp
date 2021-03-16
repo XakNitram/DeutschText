@@ -1,3 +1,4 @@
+#include "pch.hpp"
 #include "Window.hpp"
 
 
@@ -100,6 +101,16 @@ bool Window::wantsExit() {
 
 void Window::swapBuffers() {
     glfwSwapBuffers(m_window);
+}
+
+
+void Window::update() {
+    glfwPollEvents();
+}
+
+
+void Window::clear() {
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 

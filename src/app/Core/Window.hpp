@@ -1,8 +1,5 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <optional>
-#include <vector>
+#include "pch.hpp"
 #include "Event.hpp"
 
 
@@ -30,5 +27,8 @@ public:
     Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* monitor = nullptr);
     bool wantsExit();
     void swapBuffers();
+    static void update();
+    static void clear();
+
     std::optional<Event> pollEvent();
 };
