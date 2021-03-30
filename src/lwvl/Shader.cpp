@@ -43,12 +43,15 @@ void lwvl::Uniform::setOrthographic(float top, float bottom, float right, float 
 }
 
 void lwvl::Uniform::set2DOrthographic(float top, float bottom, float right, float left) {
+    float rlStein = 1.0f / (right - left);
+    float tbStein = 1.0f / (top - bottom);
+
 	float ortho[16] = {
 		// top 3 rows
-		2.0f / (right - left), 0.0f, 0.0f, 0.0f,
-		0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
+		2.0f * rlStein, 0.0f, 0.0f, 0.0f,
+		0.0f, 2.0f * tbStein, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.0f, 0.0f,
-		-(right + left) / (right - left), -(top + bottom) / (top - bottom), 0.0f, 1.0f
+		-(right + left) * rlStein, -(top + bottom) * tbStein, 0.0f, 1.0f
 	};
 
 	glUniformMatrix4fv(m_location, 1, GL_FALSE, ortho);
