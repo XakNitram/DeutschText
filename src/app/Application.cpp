@@ -50,6 +50,8 @@ public:
                     KeyboardEvent& key_event = std::get<KeyboardEvent>(concrete.event);
                     if(key_event.key == GLFW_KEY_ENTER) {
                         std::cout << std::endl;
+                    } else if (key_event.key == GLFW_KEY_ESCAPE) {
+                        m_window.shouldClose(true);
                     }
                 }
 
