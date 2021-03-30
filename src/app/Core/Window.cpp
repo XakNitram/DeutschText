@@ -18,16 +18,16 @@ void Window::terminate() {
 }
 
 
-Window::Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* monitor) : m_config({width, height}) {
+Window::Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* monitor) : config({width, height}) {
     m_events.reserve(event_queue_capacity);
 
     // Set GLFW window hints.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-#ifndef NDEBUG
+//#ifndef NDEBUG
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-#endif // !NDEBUG
+//#endif // !NDEBUG
 
     /* Initialize GLFW. */
     if (!glfwInit()) {
@@ -90,11 +90,11 @@ Window::Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* 
     });
 
     /* Output the current OpenGL version. */
-    // std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
 }
 
 
-bool Window::wantsExit() {
+bool Window::shouldClose() {
     return glfwWindowShouldClose(m_window);
 }
 
@@ -122,4 +122,12 @@ std::optional<Event> Window::pollEvent() {
         m_events.pop_back();
         return event;
     }
+}
+
+void Window::pushEvent(Event event) {
+    m_events.push_back(event);
+}
+
+void Window::shouldClose(bool value) {
+    glfwSetWindowShouldClose(m_window, value);
 }

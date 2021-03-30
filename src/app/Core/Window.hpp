@@ -13,8 +13,8 @@ public:
         uint32_t height;
     };
 
+    Config config;
 private:
-    Config m_config;
     GLFWwindow* m_window;
 
     std::vector<Event> m_events;
@@ -25,10 +25,12 @@ private:
 
 public:
     Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* monitor = nullptr);
-    bool wantsExit();
+    bool shouldClose();
+    void shouldClose(bool value);
     void swapBuffers();
     static void update();
     static void clear();
 
+    void pushEvent(Event event);
     std::optional<Event> pollEvent();
 };
