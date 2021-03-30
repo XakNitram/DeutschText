@@ -2,6 +2,8 @@ add_library(
         lwvl
 
         Buffer.hpp
+        Common.hpp
+        Common.cpp
         Framebuffer.hpp
         Framebuffer.cpp
         GLDebug.hpp

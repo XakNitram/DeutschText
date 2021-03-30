@@ -1,5 +1,6 @@
 #pragma once
 #include "pch.hpp"
+#include "Common.hpp"
 
 
 namespace lwvl {
@@ -23,6 +24,6 @@ namespace lwvl {
         void attribute(uint8_t dimensions, GLenum type, int64_t stride, int64_t offset, uint32_t divisor = 0);
 
         void drawArrays(GLenum mode, int count) const;
-        void drawElements(GLenum mode, int count, GLenum type) const;
+        void drawElements(GLenum mode, int count, ByteFormat type) const;
     };
 }

@@ -31,6 +31,6 @@ void lwvl::VertexArray::drawArrays(GLenum mode, int count) const {
     glDrawArraysInstanced(mode, 0, count, m_instances);
 }
 
-void lwvl::VertexArray::drawElements(GLenum mode, int count, GLenum type) const {
-    glDrawElementsInstanced(mode, count, type, nullptr, m_instances);
+void lwvl::VertexArray::drawElements(GLenum mode, int count, ByteFormat type) const {
+    glDrawElementsInstanced(mode, count, static_cast<GLenum>(type), nullptr, m_instances);
 }
