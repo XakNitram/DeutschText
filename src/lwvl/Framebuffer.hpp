@@ -18,7 +18,7 @@ namespace lwvl {
         Framebuffer();
         ~Framebuffer();
 
-        void attach(Attachment, Texture);
+        void attach(Attachment attachment, Texture& texture);
 
         void bind();
 
