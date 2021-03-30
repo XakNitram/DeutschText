@@ -12,4 +12,6 @@ namespace lwvl {
         HalfFloat = GL_HALF_FLOAT,
         Float = GL_FLOAT,
     };
+
+    void clear();
 }
