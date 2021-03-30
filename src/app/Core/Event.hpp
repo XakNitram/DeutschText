@@ -5,13 +5,15 @@ struct KeyboardEvent { int key, scancode, mods; };
 struct TextEvent { unsigned int codepoint; };
 struct MouseMotionEvent { double xpos, ypos; };
 struct MouseButtonEvent { int button, mods; };
+class UserEvent {};  // Subclass this to create user-defined events.
 
 using AnonymousEvent = \
 std::variant<
         KeyboardEvent,
         TextEvent,
         MouseMotionEvent,
-        MouseButtonEvent
+        MouseButtonEvent,
+        UserEvent*
 >;
 
 
@@ -32,6 +34,9 @@ public:
         // MouseButtonEvent
         MouseDown,
         MouseUp,
+
+        // UserEvent
+        UserEvent
     };
 
     Type type;
