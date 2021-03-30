@@ -14,20 +14,20 @@ uint32_t lwvl::Texture::slot() const {
 
 void lwvl::Texture::slot(uint32_t value) {
     m_slot = value;
-//    int32_t maxTextureUnits;
-//    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &maxTextureUnits);
-//
-//    if (static_cast<uint32_t>(maxTextureUnits) < value) {
-//        m_slot = value;
-//    } else {
-//        throw std::exception("Max Texture Units Exceeded.");
-//    }
+    //    int32_t maxTextureUnits;
+    //    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &maxTextureUnits);
+    //
+    //    if (static_cast<uint32_t>(maxTextureUnits) < value) {
+    //        m_slot = value;
+    //    } else {
+    //        throw std::exception("Max Texture Units Exceeded.");
+    //    }
 }
 
 void lwvl::Texture::construct(
-        uint32_t width, uint32_t height, const void *data,
-        ChannelLayout internalFormat, ChannelOrder format,
-        ByteFormat type
+    uint32_t width, uint32_t height, const void *data,
+    ChannelLayout internalFormat, ChannelOrder format,
+    ByteFormat type
 ) {
     glTexImage2D(
         GL_TEXTURE_2D, 0, static_cast<GLint>(internalFormat), width, height, 0,

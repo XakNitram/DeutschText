@@ -3,14 +3,14 @@
 
 
 Glyph::Glyph(
-        float left, float bottom, float right, float top,
-        float w, float h, float xBear, float yBear, float adv
+    float left, float bottom, float right, float top,
+    float w, float h, float xBear, float yBear, float adv
 ) :
-        texCoordL(left), texCoordB(bottom),
-        texCoordR(right), texCoordT(top),
-        width(w), height(h),
-        xBearing(xBear), yBearing(yBear),
-        advance(adv) {}
+    texCoordL(left), texCoordB(bottom),
+    texCoordR(right), texCoordT(top),
+    width(w), height(h),
+    xBearing(xBear), yBearing(yBear),
+    advance(adv) {}
 
 
 Font::Font(const char *fontFile, uint32_t fontSize) {
@@ -39,10 +39,10 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
 
     bind();
     construct(
-            atlasWidth, atlasHeight, nullptr,
-            lwvl::ChannelLayout::RGBA,
-            lwvl::ChannelOrder::RGBA,
-            lwvl::ByteFormat::Byte
+        atlasWidth, atlasHeight, nullptr,
+        lwvl::ChannelLayout::RGBA,
+        lwvl::ChannelOrder::RGBA,
+        lwvl::ByteFormat::Byte
     );
     filter(lwvl::Filter::Linear);
 
@@ -63,7 +63,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
     //lwvl::Uniform glyphResolution = atlasPipeline.uniform("resolution");
 
     atlasPipeline.uniform("projection").set2DOrthographic(
-            decHeight, 0.0f, decWidth, 0.0f
+        decHeight, 0.0f, decWidth, 0.0f
     );
 
     lwvl::Texture glyphTexture;
@@ -82,10 +82,10 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
     vbo.usage(lwvl::Usage::Static);
 
     std::array<float, 16> glyphQuadData{
-            0.0f, 0.0f, 0.0f, 1.0f,
-            1.0f, 0.0f, 1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f, 0.0f
+        0.0f, 0.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 1.0f, 1.0f,
+        1.0f, 1.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f
     };
 
     vbo.construct(glyphQuadData.begin(), glyphQuadData.end());
@@ -96,8 +96,8 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
     ebo.usage(lwvl::Usage::Static);
 
     std::array<uint8_t, 6> glyphQuadIndices{
-            0, 1, 2,
-            2, 3, 0
+        0, 1, 2,
+        2, 3, 0
     };
 
     ebo.construct(glyphQuadIndices.begin(), glyphQuadIndices.end());
@@ -123,12 +123,12 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
 
         // Reconstruct the texture for each glyph since they'll be different sizes in memory.
         glyphTexture.construct(
-                font->glyph->bitmap.width,
-                font->glyph->bitmap.rows,
-                font->glyph->bitmap.buffer,
-                lwvl::ChannelLayout::Red,
-                lwvl::ChannelOrder::Red,
-                lwvl::ByteFormat::UnsignedByte
+            font->glyph->bitmap.width,
+            font->glyph->bitmap.rows,
+            font->glyph->bitmap.buffer,
+            lwvl::ChannelLayout::Red,
+            lwvl::ChannelOrder::Red,
+            lwvl::ByteFormat::UnsignedByte
         );
 
         const auto charWidth  = static_cast<float>(font->glyph->bitmap.width);
@@ -147,13 +147,13 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
         glyphOffset.set2f(texLeft, texBottom);
 
         characterSet.emplace_back(
-                texLeft * widthPixel, texBottom * heightPixel,
-                texRight * widthPixel, texTop * heightPixel,
-                charWidth, charHeight,
+            texLeft * widthPixel, texBottom * heightPixel,
+            texRight * widthPixel, texTop * heightPixel,
+            charWidth, charHeight,
 
-                static_cast<float>(font->glyph->bitmap_left),
-                static_cast<float>(font->glyph->bitmap_top),
-                static_cast<float>(font->glyph->advance.x)
+            static_cast<float>(font->glyph->bitmap_left),
+            static_cast<float>(font->glyph->bitmap_top),
+            static_cast<float>(font->glyph->advance.x)
         );
 
         vao.drawElements(lwvl::PrimitiveMode::Triangles, 6, lwvl::ByteFormat::UnsignedByte);

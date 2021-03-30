@@ -2,8 +2,8 @@
 #include "Window.hpp"
 
 
-Window* Window::getState(GLFWwindow *window) {
-    return static_cast<Window*>(glfwGetWindowUserPointer(window));
+Window *Window::getState(GLFWwindow *window) {
+    return static_cast<Window *>(glfwGetWindowUserPointer(window));
 }
 
 
@@ -18,16 +18,16 @@ void Window::terminate() {
 }
 
 
-Window::Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* monitor) : config({width, height}) {
+Window::Window(uint32_t width, uint32_t height, const char *title, GLFWmonitor *monitor) : config({width, height}) {
     m_events.reserve(event_queue_capacity);
 
     // Set GLFW window hints.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-//#ifndef NDEBUG
+    //#ifndef NDEBUG
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-//#endif // !NDEBUG
+    //#endif // !NDEBUG
 
     /* Initialize GLFW. */
     if (!glfwInit()) {
@@ -42,52 +42,57 @@ Window::Window(uint32_t width, uint32_t height, const char* title, GLFWmonitor* 
         throw std::exception("Failed to create GLFW window.");
     }
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
         terminate();
         throw std::exception("Failed to initialize Glad.");
     }
 
     glfwSetWindowUserPointer(m_window, this);
 
-    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-        Window* state = Window::getState(window);
-        switch(action) {
-            case GLFW_PRESS:
-                state->m_events.emplace_back(Event::Type::KeyPress, KeyboardEvent{key, scancode, mods});
-                return;
-            case GLFW_RELEASE:
-                state->m_events.emplace_back(Event::Type::KeyRelease, KeyboardEvent{key, scancode, mods});
-                return;
-            case GLFW_REPEAT:
-                state->m_events.emplace_back(Event::Type::KeyRepeat, KeyboardEvent{key, scancode, mods});
-                return;
-            default:
-                return;
+    glfwSetKeyCallback(
+        m_window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+            Window *state = Window::getState(window);
+            switch (action) {
+                case GLFW_PRESS:state->m_events.emplace_back(Event::Type::KeyPress, KeyboardEvent{key, scancode, mods});
+                    return;
+                case GLFW_RELEASE:
+                    state->m_events
+                         .emplace_back(Event::Type::KeyRelease, KeyboardEvent{key, scancode, mods});
+                    return;
+                case GLFW_REPEAT:
+                    state->m_events
+                         .emplace_back(Event::Type::KeyRepeat, KeyboardEvent{key, scancode, mods});
+                    return;
+                default:return;
+            }
         }
-    });
+    );
 
-    glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos) {
-        Window* state = Window::getState(window);
-        state->m_events.emplace_back(Event::Type::MouseMotion, MouseMotionEvent{xpos, ypos});
-    });
-
-    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int mods){
-        Window* state = Window::getState(window);
-        switch(action) {
-            case GLFW_PRESS:
-                state->m_events.emplace_back(Event::Type::MouseDown, MouseButtonEvent{button, mods});
-                return;
-            case GLFW_RELEASE:
-                state->m_events.emplace_back(Event::Type::MouseUp, MouseButtonEvent{button, mods});
-            default:
-                return;
+    glfwSetCursorPosCallback(
+        m_window, [](GLFWwindow *window, double xpos, double ypos) {
+            Window *state = Window::getState(window);
+            state->m_events.emplace_back(Event::Type::MouseMotion, MouseMotionEvent{xpos, ypos});
         }
-    });
+    );
 
-    glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int codepoint) {
-        Window* state = Window::getState(window);
-        state->m_events.emplace_back(Event::Type::TextInput, TextEvent{codepoint});
-    });
+    glfwSetMouseButtonCallback(
+        m_window, [](GLFWwindow *window, int button, int action, int mods) {
+            Window *state = Window::getState(window);
+            switch (action) {
+                case GLFW_PRESS:state->m_events.emplace_back(Event::Type::MouseDown, MouseButtonEvent{button, mods});
+                    return;
+                case GLFW_RELEASE:state->m_events.emplace_back(Event::Type::MouseUp, MouseButtonEvent{button, mods});
+                default:return;
+            }
+        }
+    );
+
+    glfwSetCharCallback(
+        m_window, [](GLFWwindow *window, unsigned int codepoint) {
+            Window *state = Window::getState(window);
+            state->m_events.emplace_back(Event::Type::TextInput, TextEvent{codepoint});
+        }
+    );
 
     /* Output the current OpenGL version. */
     std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;

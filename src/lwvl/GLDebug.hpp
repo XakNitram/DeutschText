@@ -1,4 +1,5 @@
 #pragma once
+
 #include "pch.hpp"
 
 namespace lwvl::debug {
@@ -34,36 +35,41 @@ namespace lwvl::debug {
     };
 
 #ifdef _WIN32
-    using LWVLDebugProc = void(__stdcall *)(
+    using LWVLDebugProc = void (__stdcall *)(
 #else
-    using LWVLDebugProc = void(*)(
+        using LWVLDebugProc = void(*)(
 #endif
         Source source, Type type, Severity severity,
-        unsigned int id, int length, const char* message,
-        const void* userState
+        unsigned int id, int length, const char *message,
+        const void *userState
     );
 
     class GLEventListener {
-        GLuint m_unusedIDs = 0;
+        GLuint        m_unusedIDs = 0;
         LWVLDebugProc m_callback;
-        void* m_userPtr;
+        void *m_userPtr;
 
         void assign();
 
     public:
-        explicit GLEventListener(void* userPtr, LWVLDebugProc callback, bool enabled = true);
+        explicit GLEventListener(void *userPtr, LWVLDebugProc callback, bool enabled = true);
+
         explicit GLEventListener(LWVLDebugProc callback, bool enabled = true);
+
         ~GLEventListener();
 
         void control(Source sourceFilter, Type typeFilter, Severity severityFilter, GLsizei count, bool enabled);
+
         void control(bool enabled);
 
-        void invoke(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message);
+        void invoke(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message);
     };
 
-    static void __stdcall glDebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* state);
+    static void __stdcall glDebugCallback(
+        GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *state
+    );
 
-    void simpleDebugCallback(GLDEBUGPROC callback, void* userPtr);
+    void simpleDebugCallback(GLDEBUGPROC callback, void *userPtr);
 
     void clearErrors();
 }

@@ -1,18 +1,19 @@
 #pragma once
+
 #include "pch.hpp"
 
 namespace lwvl {
     namespace details {
         enum class BufferTarget {
-            Array = GL_ARRAY_BUFFER,
+            Array   = GL_ARRAY_BUFFER,
             Element = GL_ELEMENT_ARRAY_BUFFER
         };
     }
 
     enum class Usage {
-        Static = GL_STATIC_DRAW,
+        Static  = GL_STATIC_DRAW,
         Dynamic = GL_DYNAMIC_DRAW,
-        Stream = GL_STREAM_DRAW
+        Stream  = GL_STREAM_DRAW
     };
 
 
@@ -30,7 +31,7 @@ namespace lwvl {
                 glDeleteBuffers(1, &bufferID);
             }
 
-            explicit operator uint32_t () const {
+            explicit operator uint32_t() const {
                 return bufferID;
             }
 
@@ -41,8 +42,8 @@ namespace lwvl {
         std::shared_ptr<Buffer::ID> m_offsite_id = std::make_shared<Buffer::ID>();
 
         // Local Data
-        uint32_t m_id = static_cast<uint32_t>(*m_offsite_id);
-        Usage m_usage = Usage::Dynamic;
+        uint32_t m_id    = static_cast<uint32_t>(*m_offsite_id);
+        Usage    m_usage = Usage::Dynamic;
 
     public:
         uint32_t id() {
@@ -51,16 +52,18 @@ namespace lwvl {
 
         Buffer() = default;
 
-        Buffer(const Buffer& other) = default;
-        Buffer& operator=(const Buffer& other) = default;
+        Buffer(const Buffer &other) = default;
 
-        Buffer(Buffer&& other) noexcept = default;
-        Buffer& operator=(Buffer&& other) noexcept = default;
+        Buffer &operator=(const Buffer &other) = default;
+
+        Buffer(Buffer &&other) noexcept = default;
+
+        Buffer &operator=(Buffer &&other) noexcept = default;
 
         template<typename T>
-        void construct(const T* data, GLsizei count) {
+        void construct(const T *data, GLsizei count) {
             glBufferData(
-                static_cast<GLenum>(target), sizeof(T) * count, 
+                static_cast<GLenum>(target), sizeof(T) * count,
                 data, static_cast<GLenum>(m_usage)
             );
         }
@@ -74,16 +77,18 @@ namespace lwvl {
         }
 
         template<typename T>
-        void update(const T* data, GLsizei count, GLsizei offsetCount = 0) {
+        void update(const T *data, GLsizei count, GLsizei offsetCount = 0) {
             glBufferSubData(static_cast<GLenum>(target), offsetCount * sizeof(T), count * sizeof(T), data);
         }
 
         template<class Iterator>
         void update(Iterator first, Iterator last, GLsizei offsetCount = 0) {
-            glBufferSubData(static_cast<GLenum>(target), offsetCount * sizeof(*first), sizeof(*first) * (last - first), &(*first));
+            glBufferSubData(
+                static_cast<GLenum>(target), offsetCount * sizeof(*first), sizeof(*first) * (last - first), &(*first));
         }
 
         void usage(Usage usage) { m_usage = usage; }
+
         Usage usage() { return m_usage; }
 
         // These operations should not be const because they modify GL state.
@@ -100,6 +105,6 @@ namespace lwvl {
     };
 
 
-    typedef Buffer<details::BufferTarget::Array> ArrayBuffer;
+    typedef Buffer<details::BufferTarget::Array>   ArrayBuffer;
     typedef Buffer<details::BufferTarget::Element> ElementBuffer;
 }

@@ -8,9 +8,9 @@ class Application {
     Window m_window;
 
     static void debug_gl(
-            lwvl::debug::Source source, lwvl::debug::Type type,
-            lwvl::debug::Severity severity, unsigned int id, int length,
-            const char *message, const void *userState
+        lwvl::debug::Source source, lwvl::debug::Type type,
+        lwvl::debug::Severity severity, unsigned int id, int length,
+        const char *message, const void *userState
     ) {
         std::cout << "[OpenGL] " << message << std::endl;
     }
@@ -35,11 +35,11 @@ public:
         }
         atlasPipeline.bind();
 
-        const auto width = static_cast<float>(m_window.config.width);
+        const auto width  = static_cast<float>(m_window.config.width);
         const auto height = static_cast<float>(m_window.config.height);
         atlasPipeline.uniform("projection").set2DOrthographic(
-                height, 0.0f,
-                width, 0.0f
+            height, 0.0f,
+            width, 0.0f
         );
 
         lwvl::VertexArray   vao;
@@ -50,15 +50,15 @@ public:
 
         atlasPipeline.uniform("scale").set2f(test.width, test.height);
         atlasPipeline.uniform("offset").set2f(
-                (width - test.width) * 0.5f,
-                (height - test.height) * 0.5f
+            (width - test.width) * 0.5f,
+            (height - test.height) * 0.5f
         );
 
         std::array<float, 16> atlasQuadData{
-                0.0f, 0.0f, test.texCoordL, test.texCoordB,
-                1.0f, 0.0f, test.texCoordR, test.texCoordB,
-                1.0f, 1.0f, test.texCoordR, test.texCoordT,
-                0.0f, 1.0f, test.texCoordL, test.texCoordT
+            0.0f, 0.0f, test.texCoordL, test.texCoordB,
+            1.0f, 0.0f, test.texCoordR, test.texCoordB,
+            1.0f, 1.0f, test.texCoordR, test.texCoordT,
+            0.0f, 1.0f, test.texCoordL, test.texCoordT
         };
 
         vao.bind();
@@ -72,8 +72,8 @@ public:
         ebo.usage(lwvl::Usage::Static);
 
         std::array<uint8_t, 6> atlasQuadElements{
-                0, 1, 2,
-                2, 3, 0
+            0, 1, 2,
+            2, 3, 0
         };
         ebo.construct(atlasQuadElements.begin(), atlasQuadElements.end());
 
@@ -111,7 +111,10 @@ public:
             atlasPipeline.bind();
             annex.bind();
             vao.bind();
-            vao.drawElements(lwvl::PrimitiveMode::Triangles, 6, lwvl::ByteFormat::UnsignedByte);
+            vao.drawElements(
+                lwvl::PrimitiveMode::Triangles, 6,
+                lwvl::ByteFormat::UnsignedByte
+            );
 
             m_window.swapBuffers();
         }

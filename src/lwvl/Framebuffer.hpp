@@ -1,11 +1,12 @@
 #pragma once
+
 #include "pch.hpp"
 #include "Texture.hpp"
 
 namespace lwvl {
     enum class Attachment {
-        Color = GL_COLOR_ATTACHMENT0,
-        Depth = GL_DEPTH_ATTACHMENT,
+        Color   = GL_COLOR_ATTACHMENT0,
+        Depth   = GL_DEPTH_ATTACHMENT,
         Stencil = GL_STENCIL_ATTACHMENT
     };
 
@@ -16,9 +17,10 @@ namespace lwvl {
 
     public:
         Framebuffer();
+
         ~Framebuffer();
 
-        void attach(Attachment attachment, Texture& texture);
+        void attach(Attachment attachment, Texture &texture);
 
         void bind();
 

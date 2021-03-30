@@ -1,19 +1,19 @@
 add_library(
-        lwvl
+    lwvl
 
-        Buffer.hpp
-        Common.hpp
-        Common.cpp
-        Framebuffer.hpp
-        Framebuffer.cpp
-        GLDebug.hpp
-        GLDebug.cpp
-        Shader.hpp
-        Shader.cpp
-        Texture.hpp
-        Texture.cpp
-        VertexArray.hpp
-        VertexArray.cpp
+    Buffer.hpp
+    Common.hpp
+    Common.cpp
+    Framebuffer.hpp
+    Framebuffer.cpp
+    GLDebug.hpp
+    GLDebug.cpp
+    Shader.hpp
+    Shader.cpp
+    Texture.hpp
+    Texture.cpp
+    VertexArray.hpp
+    VertexArray.cpp
 )
 
 target_include_directories(lwvl PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
