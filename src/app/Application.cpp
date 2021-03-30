@@ -24,7 +24,7 @@ public:
 
         lwvl::debug::GLEventListener listener(debug_gl);
 
-        Font annex("Data/Fonts/Deutsch.ttf", pixelFontSize);
+        Font deutsch("Data/Fonts/Deutsch.ttf", pixelFontSize);
 
         lwvl::ShaderProgram atlasPipeline;
         {
@@ -42,43 +42,54 @@ public:
             width, 0.0f
         );
 
-        lwvl::VertexArray   vao;
-        lwvl::ArrayBuffer   vbo;
-        lwvl::ElementBuffer ebo;
+        lwvl::VertexArray   letterVertexArray;
+        lwvl::ArrayBuffer   letterVertexBuffer;
+        lwvl::ElementBuffer letterElementArray;
 
-        Glyph test = annex.glyph('D');
 
-        atlasPipeline.uniform("scale").set2f(test.width, test.height);
-        atlasPipeline.uniform("offset").set2f(
-            (width - test.width) * 0.5f,
-            (height - test.height) * 0.5f
+        lwvl::Uniform letterScale  = atlasPipeline.uniform("scale");
+        lwvl::Uniform letterOffset = atlasPipeline.uniform("offset");
+
+        // Set an initial letter.
+        Glyph letter = deutsch.glyph('D');
+
+        letterScale.set2f(letter.width, letter.height);
+        letterOffset.set2f(
+            (width - letter.width) * 0.5f,
+            (height - letter.height) * 0.5f
         );
 
+        // Throw the texture coordinates at the end of the buffer for easier updating.
         std::array<float, 16> atlasQuadData{
-            0.0f, 0.0f, test.texCoordL, test.texCoordB,
-            1.0f, 0.0f, test.texCoordR, test.texCoordB,
-            1.0f, 1.0f, test.texCoordR, test.texCoordT,
-            0.0f, 1.0f, test.texCoordL, test.texCoordT
+            0.0f, 0.0f,
+            1.0f, 0.0f,
+            1.0f, 1.0f,
+            0.0f, 1.0f,
+
+            letter.texCoordL, letter.texCoordB,
+            letter.texCoordR, letter.texCoordB,
+            letter.texCoordR, letter.texCoordT,
+            letter.texCoordL, letter.texCoordT
         };
 
-        vao.bind();
-        vbo.bind();
-        vbo.usage(lwvl::Usage::Static);
-        vbo.construct(atlasQuadData.begin(), atlasQuadData.end());
-        vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 0);
-        vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 2 * sizeof(float));
+        letterVertexArray.bind();
+        letterVertexBuffer.bind();
+        letterVertexBuffer.usage(lwvl::Usage::Dynamic);
+        letterVertexBuffer.construct(atlasQuadData.begin(), atlasQuadData.end());
+        letterVertexArray.attribute(2, GL_FLOAT, 2 * sizeof(float), 0);
+        letterVertexArray.attribute(2, GL_FLOAT, 2 * sizeof(float), 8 * sizeof(float));
 
-        ebo.bind();
-        ebo.usage(lwvl::Usage::Static);
+        letterElementArray.bind();
+        letterElementArray.usage(lwvl::Usage::Static);
 
         std::array<uint8_t, 6> atlasQuadElements{
             0, 1, 2,
             2, 3, 0
         };
-        ebo.construct(atlasQuadElements.begin(), atlasQuadElements.end());
+        letterElementArray.construct(atlasQuadElements.begin(), atlasQuadElements.end());
 
-        annex.slot(0);
-        annex.bind();
+        deutsch.slot(0);
+        deutsch.bind();
 
         atlasPipeline.uniform("atlas").set1i(0);
         //atlasPipeline.uniform("resolution").set2f(float(m_window.config.width), float(m_window.config.height));
@@ -104,14 +115,35 @@ public:
                     TextEvent &text_event = std::get<TextEvent>(concrete.event);
                     char      key_name    = static_cast<char>(text_event.codepoint);
                     std::cout << key_name;
+
+                    // Change the currently rendered character.
+                    letter = deutsch.glyph(key_name);
+
+                    // Update the texture coordinates.
+                    letterVertexBuffer.bind();
+                    std::array<float, 8> updateData {
+                        letter.texCoordL, letter.texCoordB,
+                        letter.texCoordR, letter.texCoordB,
+                        letter.texCoordR, letter.texCoordT,
+                        letter.texCoordL, letter.texCoordT
+                    };
+
+                    letterVertexBuffer.update(updateData.begin(), updateData.end(), 8);
+
+                    // Update the uniforms.
+                    letterScale.set2f(letter.width, letter.height);
+                    letterOffset.set2f(
+                        (width - letter.width) * 0.5f,
+                        (height - letter.height) * 0.5f
+                    );
                 }
             }
 
             lwvl::clear();
             atlasPipeline.bind();
-            annex.bind();
-            vao.bind();
-            vao.drawElements(
+            deutsch.bind();
+            letterVertexArray.bind();
+            letterVertexArray.drawElements(
                 lwvl::PrimitiveMode::Triangles, 6,
                 lwvl::ByteFormat::UnsignedByte
             );
