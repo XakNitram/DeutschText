@@ -19,12 +19,12 @@ public:
 };
 
 
-class Font : public lwvl::Texture {
+class Font : public lwvl::Texture2D {
     std::vector<Glyph> characterSet;
 
 protected:
     // Disallow the user constructing over the font atlas.
-    using lwvl::Texture::construct;
+    using lwvl::Texture2D::construct;
 
 public:
     Font(const char *fontFile, uint32_t fontSize);

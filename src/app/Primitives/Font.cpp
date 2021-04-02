@@ -66,7 +66,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
         decHeight, 0.0f, decWidth, 0.0f
     );
 
-    lwvl::Texture glyphTexture;
+    lwvl::Texture2D glyphTexture;
 
     glyphTexture.slot(1);
     glyphTexture.bind();
