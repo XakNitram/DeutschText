@@ -43,5 +43,9 @@ namespace lwvl {
         void drawArrays(PrimitiveMode mode, int count) const;
 
         void drawElements(PrimitiveMode mode, int count, ByteFormat type) const;
+
+        void multiDrawArrays(PrimitiveMode mode, const GLint *firsts, const GLsizei *counts, GLsizei drawCount);
+
+        void multiDrawElements(PrimitiveMode mode, const GLsizei *counts, ByteFormat type, const void * const *indices, GLsizei drawCount);
     };
 }

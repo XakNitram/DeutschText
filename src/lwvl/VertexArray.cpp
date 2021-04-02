@@ -35,3 +35,12 @@ void lwvl::VertexArray::drawArrays(PrimitiveMode mode, int count) const {
 void lwvl::VertexArray::drawElements(PrimitiveMode mode, int count, ByteFormat type) const {
     glDrawElementsInstanced(static_cast<GLenum>(mode), count, static_cast<GLenum>(type), nullptr, m_instances);
 }
+
+void lwvl::VertexArray::multiDrawArrays(PrimitiveMode mode, const GLint *firsts, const GLsizei *counts, GLsizei drawCount) {
+    glMultiDrawArrays(static_cast<GLenum>(mode), firsts, counts, drawCount);
+}
+
+void lwvl::VertexArray::multiDrawElements(PrimitiveMode mode, const GLsizei *counts, ByteFormat type, const void * const *indices, GLsizei drawCount) {
+    glMultiDrawElements(static_cast<GLenum>(mode), counts, static_cast<GLenum>(type), indices, drawCount);
+}
+
