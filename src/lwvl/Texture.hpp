@@ -2,6 +2,7 @@
 
 #include "pch.hpp"
 #include "Framebuffer.hpp"
+#include "Buffer.hpp"
 #include "Common.hpp"
 
 namespace lwvl {
@@ -87,10 +88,9 @@ namespace lwvl {
         DepthStencil   = GL_DEPTH_STENCIL
     };
 
-    // In this project I don't see myself using anything other than
-    //  a 2D texture, even if we use textures from file.
-    class Texture {
-        class ID {
+    namespace detail {
+        class TextureID {
+        protected:
             static unsigned int reserve() {
                 unsigned int tempID;
                 glGenTextures(1, &tempID);
@@ -98,7 +98,7 @@ namespace lwvl {
             }
 
         public:
-            ~ID() {
+            ~TextureID() {
                 glDeleteTextures(1, &textureID);
             }
 
@@ -109,27 +109,78 @@ namespace lwvl {
             const uint32_t textureID = reserve();
         };
 
-        // Offsite Data - to avoid copying buffers on the GPU for simple copies of this class.
-        std::shared_ptr<Texture::ID> m_offsite_id = std::make_shared<Texture::ID>();
+        enum class TextureTarget {
+            Texture2D     = GL_TEXTURE_2D,
+            Texture3D     = GL_TEXTURE_3D,
+            TextureBuffer = GL_TEXTURE_BUFFER
+        };
 
-        // Local Data
-        uint32_t m_id   = static_cast<uint32_t>(*m_offsite_id);
-        uint32_t m_slot = 0;
+        template<TextureTarget target>
+        class TextureBase {
+        protected:
+            // Offsite Data - to avoid copying buffers on the GPU for simple copies of this class.
+            std::shared_ptr<TextureID> m_offsite_id = std::make_shared<TextureID>();
 
-        friend Framebuffer;
+            // Local Data
+            uint32_t m_id   = static_cast<uint32_t>(*m_offsite_id);
+            uint32_t m_slot = 0;
+
+            friend Framebuffer;
+        public:
+            [[nodiscard]] uint32_t slot() const {
+                return m_slot;
+            }
+
+            void slot(uint32_t value) {
+                m_slot = value;
+                //    int32_t maxTextureUnits;
+                //    glGetIntegerv(GL_MAX_TEXTURE_UNITS, &maxTextureUnits);
+                //
+                //    if (static_cast<uint32_t>(maxTextureUnits) < value) {
+                //        m_slot = value;
+                //    } else {
+                //        throw std::exception("Max Texture Units Exceeded.");
+                //    }
+            }
+
+            void filter(Filter value) {
+                const auto GLTarget = static_cast<GLenum>(target);
+                const auto GLFilter = static_cast<GLenum>(value);
+                glTexParameteri(GLTarget, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GLTarget, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                glTexParameteri(GLTarget, GL_TEXTURE_MIN_FILTER, GLFilter);
+                glTexParameteri(GLTarget, GL_TEXTURE_MAG_FILTER, GLFilter);
+            }
+
+            void bind() {
+                if (m_id != 0) {
+                    glActiveTexture(GL_TEXTURE0 + m_slot);
+                    glBindTexture(static_cast<GLenum>(target), m_id);
+                }
+            }
+        };
+    }
+
+    class Texture2D : public detail::TextureBase<detail::TextureTarget::Texture2D> {
     public:
-        [[nodiscard]] uint32_t slot() const;
-
-        void slot(uint32_t);
-
         void construct(
-                uint32_t width, uint32_t height, const void *data,
-                ChannelLayout internalFormat = ChannelLayout::R8UI, ChannelOrder format = ChannelOrder::Red,
-                ByteFormat type = ByteFormat::Byte
+            uint32_t width, uint32_t height, const void *pixels,
+            ChannelLayout internalFormat = ChannelLayout::R8UI, ChannelOrder format = ChannelOrder::Red,
+            ByteFormat type = ByteFormat::Byte
         );
+    };
 
-        void filter(Filter);
+    class Texture3D : public detail::TextureBase<detail::TextureTarget::Texture3D> {
+    public:
+        void construct(
+            uint32_t width, uint32_t height, uint32_t depth, const void *pixels,
+            ChannelLayout internalFormat = ChannelLayout::R8UI, ChannelOrder format = ChannelOrder::Red,
+            ByteFormat type = ByteFormat::Byte
+        );
+    };
 
-        void bind();
+    class BufferTexture : public detail::TextureBase<detail::TextureTarget::TextureBuffer> {
+    public:
+        void construct(TextureBuffer &buffer, ChannelLayout internalFormat = ChannelLayout::R8UI);
     };
 }

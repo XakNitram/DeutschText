@@ -6,7 +6,8 @@ namespace lwvl {
     namespace details {
         enum class BufferTarget {
             Array   = GL_ARRAY_BUFFER,
-            Element = GL_ELEMENT_ARRAY_BUFFER
+            Element = GL_ELEMENT_ARRAY_BUFFER,
+            Texture = GL_TEXTURE_BUFFER
         };
     }
 
@@ -29,6 +30,7 @@ namespace lwvl {
         public:
             ~ID() {
                 glDeleteBuffers(1, &bufferID);
+                std::cout << "Deleted buffer " << bufferID << "." << std::endl;
             }
 
             explicit operator uint32_t() const {
@@ -107,4 +109,5 @@ namespace lwvl {
 
     typedef Buffer<details::BufferTarget::Array>   ArrayBuffer;
     typedef Buffer<details::BufferTarget::Element> ElementBuffer;
+    typedef Buffer<details::BufferTarget::Texture> TextureBuffer;
 }
