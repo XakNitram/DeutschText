@@ -30,7 +30,6 @@ namespace lwvl {
         public:
             ~ID() {
                 glDeleteBuffers(1, &bufferID);
-                std::cout << "Deleted buffer " << bufferID << "." << std::endl;
             }
 
             explicit operator uint32_t() const {
@@ -53,6 +52,8 @@ namespace lwvl {
         }
 
         Buffer() = default;
+
+        explicit Buffer(Usage usage) : m_usage(usage) {}
 
         Buffer(const Buffer &other) = default;
 
