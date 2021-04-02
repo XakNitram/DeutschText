@@ -76,7 +76,6 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
 
     lwvl::VertexArray   vao;
     lwvl::ArrayBuffer   vbo;
-    lwvl::ElementBuffer ebo;
     vao.bind();
     vbo.bind();
     vbo.usage(lwvl::Usage::Static);
@@ -92,16 +91,6 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
     vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 0);
     vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 2 * sizeof(float));
 
-    ebo.bind();
-    ebo.usage(lwvl::Usage::Static);
-
-    std::array<uint8_t, 6> glyphQuadIndices{
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    ebo.construct(glyphQuadIndices.begin(), glyphQuadIndices.end());
-
     const float widthPixel  = 1.0f / decWidth;
     const float heightPixel = 1.0f / decHeight;
 
@@ -111,6 +100,9 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
     const auto[prevX, prevY, prevWidth, prevHeight] = prevViewport;
 
     glViewport(0, 0, atlasWidth, atlasHeight);
+
+    GLint previousUnpackAlignment;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &previousUnpackAlignment);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glEnable(GL_BLEND);
@@ -130,6 +122,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
             lwvl::ChannelOrder::Red,
             lwvl::ByteFormat::UnsignedByte
         );
+
 
         const auto charWidth  = static_cast<float>(font->glyph->bitmap.width);
         const auto charHeight = static_cast<float>(font->glyph->bitmap.rows);
@@ -156,11 +149,12 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
             static_cast<float>(font->glyph->advance.x)
         );
 
-        vao.drawElements(lwvl::PrimitiveMode::Triangles, 6, lwvl::ByteFormat::UnsignedByte);
+        vao.drawArrays(lwvl::PrimitiveMode::TriangleFan, 4);
     }
 
     glViewport(prevX, prevY, prevWidth, prevHeight);
     lwvl::Framebuffer::clear();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, previousUnpackAlignment);
 
     FT_Done_Face(font);
     FT_Done_FreeType(ft);
