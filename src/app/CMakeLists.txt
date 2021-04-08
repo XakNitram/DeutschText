@@ -10,6 +10,8 @@ add_executable(
     # PRIMITIVES
     Primitives/Font.hpp
     Primitives/Font.cpp
+    Primitives/Text.hpp
+    Primitives/Text.cpp
 )
 
 target_include_directories(deutsch-text PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -50,28 +52,31 @@ add_custom_command(
 add_custom_target(
     shaders ALL
     DEPENDS
-    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/atlas.vert
-    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/atlas.frag
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/text.vert
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/text.frag
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/glyph.vert
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/glyph.frag
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/mazing.frag
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/spacetime.frag
 )
 add_dependencies(deutsch-text shaders)
 
 # Copy shaders to output directory.
 add_custom_command(
     DEPENDS
-    ${CMAKE_SOURCE_DIR}/res/Shaders/atlas.vert
-    ${CMAKE_SOURCE_DIR}/res/Shaders/atlas.frag
+    ${CMAKE_SOURCE_DIR}/res/Shaders/text.vert
+    ${CMAKE_SOURCE_DIR}/res/Shaders/text.frag
     ${CMAKE_SOURCE_DIR}/res/Shaders/glyph.vert
     ${CMAKE_SOURCE_DIR}/res/Shaders/glyph.frag
     ${CMAKE_SOURCE_DIR}/res/Shaders/mazing.frag
+    ${CMAKE_SOURCE_DIR}/res/Shaders/spacetime.frag
     OUTPUT
-    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/atlas.vert
-    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/atlas.frag
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/text.vert
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/text.frag
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/glyph.vert
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/glyph.frag
     ${CMAKE_BINARY_DIR}/bin/Data/Shaders/mazing.frag
+    ${CMAKE_BINARY_DIR}/bin/Data/Shaders/spacetime.frag
     COMMENT "Copied shader folder to output"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/res/Shaders/

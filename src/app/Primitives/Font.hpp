@@ -21,6 +21,7 @@ public:
 
 class Font : public lwvl::Texture2D {
     std::vector<Glyph> characterSet;
+    float pixelScale;
 
 protected:
     // Disallow the user constructing over the font atlas.
@@ -30,4 +31,6 @@ public:
     Font(const char *fontFile, uint32_t fontSize);
 
     const Glyph &glyph(unsigned char val);
+
+    [[nodiscard]] float scaler() const;
 };

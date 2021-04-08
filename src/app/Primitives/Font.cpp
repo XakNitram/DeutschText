@@ -13,7 +13,7 @@ Glyph::Glyph(
     advance(adv) {}
 
 
-Font::Font(const char *fontFile, uint32_t fontSize) {
+Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_cast<float>(fontSize)) {
     FT_Library ft;
     if (FT_Init_FreeType(&ft)) {
         std::cerr << "Could not initialize FreeType Library." << std::endl;
@@ -146,7 +146,9 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
 
             static_cast<float>(font->glyph->bitmap_left),
             static_cast<float>(font->glyph->bitmap_top),
-            static_cast<float>(font->glyph->advance.x)
+
+            // Divide by 64 to get value in pixels. (Just the way FreeType works.)
+            static_cast<float>(font->glyph->advance.x >> 6)
         );
 
         vao.drawArrays(lwvl::PrimitiveMode::TriangleFan, 4);
@@ -162,4 +164,8 @@ Font::Font(const char *fontFile, uint32_t fontSize) {
 
 const Glyph &Font::glyph(unsigned char val) {
     return characterSet[static_cast<size_t>(val)];
+}
+
+float Font::scaler() const {
+    return pixelScale;
 }
