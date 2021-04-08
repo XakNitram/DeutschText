@@ -4,17 +4,19 @@
 #include "Event.hpp"
 
 
-extern constexpr size_t event_queue_capacity = 3;
+extern constexpr size_t eventStackCapacity = 3;
+
+
+struct Config {
+    uint32_t width;
+    uint32_t height;
+    bool resizable = false;  // This can be converted to a flag bit type thing when additional features are required.
+};
 
 
 class Window {
 public:
-    struct Config {
-        uint32_t width;
-        uint32_t height;
-    };
-
-    Config config;
+    const Config config;
 private:
     GLFWwindow *m_window;
 

@@ -19,7 +19,12 @@ void Window::terminate() {
 
 
 Window::Window(uint32_t width, uint32_t height, const char *title, GLFWmonitor *monitor) : config({width, height}) {
-    m_events.reserve(event_queue_capacity);
+    m_events.reserve(eventStackCapacity);
+
+    /* Initialize GLFW. */
+    if (!glfwInit()) {
+        throw std::exception("Failed to initialize GLFW.");
+    }
 
     // Set GLFW window hints.
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -29,10 +34,7 @@ Window::Window(uint32_t width, uint32_t height, const char *title, GLFWmonitor *
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     //#endif // !NDEBUG
 
-    /* Initialize GLFW. */
-    if (!glfwInit()) {
-        throw std::exception("Failed to initialize GLFW.");
-    }
+    glfwWindowHint(GLFW_RESIZABLE, config.resizable ? GLFW_TRUE : GLFW_FALSE);
 
     /* Create a GLFW window and its OpenGL context. */
     m_window = glfwCreateWindow(width, height, title, monitor, nullptr);
