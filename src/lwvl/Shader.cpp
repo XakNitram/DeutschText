@@ -100,28 +100,6 @@ int lwvl::ShaderProgram::uniformLocation(const std::string &name) const {
     }
 }
 
-unsigned int lwvl::ShaderProgram::reserve() {
-    unsigned int id = glCreateProgram();
-    return id;
-}
-
-lwvl::ShaderProgram::ShaderProgram() = default;
-
-lwvl::ShaderProgram::ShaderProgram(ShaderProgram &&other) noexcept {
-    other.m_id = 0;
-}
-
-lwvl::ShaderProgram::~ShaderProgram() {
-    // An id of 0 will be silently ignored.
-    glDeleteProgram(m_id);
-}
-
-lwvl::ShaderProgram &lwvl::ShaderProgram::operator=(ShaderProgram &&other) noexcept {
-    m_id = other.m_id;
-    other.m_id = 0;
-    return *this;
-}
-
 unsigned int lwvl::ShaderProgram::id() const {
     return m_id;
 }

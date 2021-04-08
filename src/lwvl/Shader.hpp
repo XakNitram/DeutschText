@@ -171,24 +171,41 @@ namespace lwvl {
     *   myShader.link(VertexShader, FragmentShader);
     */
     class ShaderProgram {
-        unsigned int m_id{reserve()};
+        class ID {
+            static unsigned int reserve() {
+                return glCreateProgram();
+            }
+
+        public:
+            ~ID() {
+                glDeleteProgram(programID);
+            }
+
+            constexpr explicit operator uint32_t() const {
+                return programID;
+            }
+
+            const uint32_t programID = reserve();
+        };
+
+        // Offsite Data -
+        std::shared_ptr<ShaderProgram::ID> m_offsite_id = std::make_shared<ShaderProgram::ID>();
+
+        // Local Data
+        uint32_t m_id = static_cast<uint32_t>(*m_offsite_id);
 
         [[nodiscard]] int uniformLocation(const std::string &name) const;
 
-        static unsigned int reserve();
-
     public:
-        ShaderProgram();
+        ShaderProgram() = default;
 
-        ShaderProgram(const ShaderProgram &other) = delete;
+        ShaderProgram(const ShaderProgram &other) = default;
 
-        ShaderProgram(ShaderProgram &&other) noexcept;
+        ShaderProgram &operator=(const ShaderProgram &other) = default;
 
-        ~ShaderProgram();
+        ShaderProgram(ShaderProgram &&other) noexcept = default;
 
-        ShaderProgram &operator=(const ShaderProgram &other) = delete;
-
-        ShaderProgram &operator=(ShaderProgram &&other) noexcept;
+        ShaderProgram &operator=(ShaderProgram &&other) noexcept = default;
 
         [[nodiscard]] unsigned int id() const;
 
