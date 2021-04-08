@@ -4,34 +4,34 @@
 
 namespace lwvl::debug {
     enum class Source {
-        API             = GL_DEBUG_SOURCE_API,
-        APPLICATION     = GL_DEBUG_SOURCE_APPLICATION,
+        API = GL_DEBUG_SOURCE_API,
+        APPLICATION = GL_DEBUG_SOURCE_APPLICATION,
         SHADER_COMPILER = GL_DEBUG_SOURCE_SHADER_COMPILER,
-        THIRD_PARTY     = GL_DEBUG_SOURCE_THIRD_PARTY,
-        WINDOW_SYSTEM   = GL_DEBUG_SOURCE_WINDOW_SYSTEM,
-        OTHER           = GL_DEBUG_SOURCE_OTHER,
-        DONT_CARE       = GL_DONT_CARE
+        THIRD_PARTY = GL_DEBUG_SOURCE_THIRD_PARTY,
+        WINDOW_SYSTEM = GL_DEBUG_SOURCE_WINDOW_SYSTEM,
+        OTHER = GL_DEBUG_SOURCE_OTHER,
+        DONT_CARE = GL_DONT_CARE
     };
 
     enum class Type {
         DEPRECATED_BEHAVIOR = GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR,
-        ERROR               = GL_DEBUG_TYPE_ERROR,
-        MARKER              = GL_DEBUG_TYPE_MARKER,
-        PERFORMANCE         = GL_DEBUG_TYPE_PERFORMANCE,
-        PORTABILITY         = GL_DEBUG_TYPE_PORTABILITY,
-        POP_GROUP           = GL_DEBUG_TYPE_POP_GROUP,
-        PUSH_GROUP          = GL_DEBUG_TYPE_PUSH_GROUP,
-        UNDEFINED_BEHAVIOR  = GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR,
-        OTHER               = GL_DEBUG_TYPE_OTHER,
-        DONT_CARE           = GL_DONT_CARE
+        ERROR = GL_DEBUG_TYPE_ERROR,
+        MARKER = GL_DEBUG_TYPE_MARKER,
+        PERFORMANCE = GL_DEBUG_TYPE_PERFORMANCE,
+        PORTABILITY = GL_DEBUG_TYPE_PORTABILITY,
+        POP_GROUP = GL_DEBUG_TYPE_POP_GROUP,
+        PUSH_GROUP = GL_DEBUG_TYPE_PUSH_GROUP,
+        UNDEFINED_BEHAVIOR = GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR,
+        OTHER = GL_DEBUG_TYPE_OTHER,
+        DONT_CARE = GL_DONT_CARE
     };
 
     enum class Severity {
-        LOW          = GL_DEBUG_SEVERITY_LOW,
-        MEDIUM       = GL_DEBUG_SEVERITY_MEDIUM,
-        HIGH         = GL_DEBUG_SEVERITY_HIGH,
+        LOW = GL_DEBUG_SEVERITY_LOW,
+        MEDIUM = GL_DEBUG_SEVERITY_MEDIUM,
+        HIGH = GL_DEBUG_SEVERITY_HIGH,
         NOTIFICATION = GL_DEBUG_SEVERITY_NOTIFICATION,
-        DONT_CARE    = GL_DONT_CARE
+        DONT_CARE = GL_DONT_CARE
     };
 
 #ifdef _WIN32
@@ -45,7 +45,7 @@ namespace lwvl::debug {
     );
 
     class GLEventListener {
-        GLuint        m_unusedIDs = 0;
+        GLuint m_unusedIDs = 0;
         LWVLDebugProc m_callback;
         void *m_userPtr;
 

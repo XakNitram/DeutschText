@@ -41,7 +41,7 @@ public:
         UserEvent
     };
 
-    Type           type;
+    Type type;
     AnonymousEvent event;
 
     Event(Type type, AnonymousEvent event);

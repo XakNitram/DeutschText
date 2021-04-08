@@ -5,8 +5,8 @@
 
 namespace lwvl {
     enum class Attachment {
-        Color   = GL_COLOR_ATTACHMENT0,
-        Depth   = GL_DEPTH_ATTACHMENT,
+        Color = GL_COLOR_ATTACHMENT0,
+        Depth = GL_DEPTH_ATTACHMENT,
         Stencil = GL_STENCIL_ATTACHMENT
     };
 

@@ -25,29 +25,30 @@ public:
     Application(uint32_t width, uint32_t height) : m_window(width, height, "DeutschText") {}
 
     int run() {
-//                const uint32_t pixelFontSize = 64;
+        //const uint32_t pixelFontSize = 64;
         const uint32_t pixelFontSize = 384;
-//        const uint32_t pixelFontSize = 768;
+        //const uint32_t pixelFontSize = 768;
 
         lwvl::debug::GLEventListener listener(debug_gl);
 
         Font deutsch("Data/Fonts/Deutsch.ttf", pixelFontSize);
-//        Font deutsch("Data/Fonts/SourceCodePro.ttf", pixelFontSize);
+        //Font deutsch("Data/Fonts/SourceCodePro.ttf", pixelFontSize);
         deutsch.slot(0);
 
         TextFactory factory(deutsch);
 
-        const auto width  = static_cast<float>(m_window.config.width);
+        const auto width = static_cast<float>(m_window.config.width);
         const auto height = static_cast<float>(m_window.config.height);
-//        factory.program.uniform("resolution").set2f(width, height);
+        //factory.program.uniform("resolution").set2f(width, height);
         factory.program.uniform("projection").set2DOrthographic(
             height, 0.0f,
             width, 0.0f
         );
 
-        Text tagline = factory.create("Deutsch", 0.0f, 0.0f, 1.0f); {
-            float       tagWidth  = tagline.Width();
-            const float scale     = (0.75f * width) / tagWidth;
+        Text tagline = factory.create("Deutsch", 0.0f, 0.0f, 1.0f);
+        {
+            float tagWidth = tagline.Width();
+            const float scale = (0.75f * width) / tagWidth;
             const float tagHeight = tagline.Height() * scale;
             tagWidth *= scale;
 
@@ -78,7 +79,7 @@ public:
 
                 if (concrete.type == Event::Type::TextInput) {
                     TextEvent &text_event = std::get<TextEvent>(concrete.event);
-                    char      key_name    = static_cast<char>(text_event.codepoint);
+                    char key_name = static_cast<char>(text_event.codepoint);
                     std::cout << key_name;
                 }
             }

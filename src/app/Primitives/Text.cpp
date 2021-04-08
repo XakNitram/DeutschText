@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "Text.hpp"
 
-Text::Text(Font &font, std::string initialText, float x, float y, float initialScale, lwvl::ShaderProgram &textShader)  :
+Text::Text(Font &font, std::string initialText, float x, float y, float initialScale, lwvl::ShaderProgram &textShader) :
     program(textShader), text(std::move(initialText)), font(font), xOffset(x), yOffset(y), textScale(initialScale) {
     program.bind();
     u_TextScale.set1f(initialScale);
@@ -56,7 +56,7 @@ void Text::constructText() {
     float stringWidth;
     float stringHeight;
     if (stringLength > 1) {
-        stringWidth  = letterCache[0].advance - letterCache[0].xBearing;
+        stringWidth = letterCache[0].advance - letterCache[0].xBearing;
         stringHeight = 0.0f;
 
         for (size_t i = 1; i < stringLength; i++) {
@@ -78,7 +78,7 @@ void Text::constructText() {
         stringHeight = letterCache[0].height;
     }
 
-    textWidth  = stringWidth;
+    textWidth = stringWidth;
     textHeight = stringHeight;
 
     float advance = 0.0f;
@@ -137,7 +137,7 @@ void Text::Scale(float value) {
     textScale = value;
 }
 
-void Text::update(float x, float y)  {
+void Text::update(float x, float y) {
     xOffset = x;
     yOffset = y;
 }
@@ -154,10 +154,10 @@ void Text::draw() {
 
 
 // TextFactory
-TextFactory::TextFactory(Font &font)  : font(font) {
-    lwvl::VertexShader   vs{lwvl::VertexShader::readFile("Data/Shaders/text.vert")};
+TextFactory::TextFactory(Font &font) : font(font) {
+    lwvl::VertexShader vs{lwvl::VertexShader::readFile("Data/Shaders/text.vert")};
     lwvl::FragmentShader fs{lwvl::FragmentShader::readFile("Data/Shaders/text.frag")};
-    //        lwvl::FragmentShader fs{lwvl::FragmentShader::readFile("Data/Shaders/spacetime.frag")};
+    //lwvl::FragmentShader fs{lwvl::FragmentShader::readFile("Data/Shaders/spacetime.frag")};
 
     program.link(vs, fs);
     program.bind();

@@ -30,11 +30,11 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
 
     characterSet.reserve(128);
 
-    const uint32_t atlasWidth  = 16 * fontSize;
+    const uint32_t atlasWidth = 16 * fontSize;
     const uint32_t atlasHeight = 8 * fontSize;
 
-    const auto cellSize  = static_cast<float>(fontSize);
-    const auto decWidth  = static_cast<float>(atlasWidth);
+    const auto cellSize = static_cast<float>(fontSize);
+    const auto decWidth = static_cast<float>(atlasWidth);
     const auto decHeight = static_cast<float>(atlasHeight);
 
     bind();
@@ -50,8 +50,8 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
     frame.bind();
     frame.attach(lwvl::Attachment::Color, *this);
 
-    lwvl::ShaderProgram  atlasPipeline;
-    lwvl::VertexShader   vs(lwvl::VertexShader::readFile("Data/Shaders/glyph.vert"));
+    lwvl::ShaderProgram atlasPipeline;
+    lwvl::VertexShader vs(lwvl::VertexShader::readFile("Data/Shaders/glyph.vert"));
     //lwvl::FragmentShader fs(lwvl::FragmentShader::readFile("Data/Shaders/mazing.frag"));
     lwvl::FragmentShader fs(lwvl::FragmentShader::readFile("Data/Shaders/glyph.frag"));
 
@@ -59,7 +59,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
     atlasPipeline.bind();
 
     lwvl::Uniform glyphOffset = atlasPipeline.uniform("offset");
-    lwvl::Uniform glyphScale  = atlasPipeline.uniform("scale");
+    lwvl::Uniform glyphScale = atlasPipeline.uniform("scale");
     //lwvl::Uniform glyphResolution = atlasPipeline.uniform("resolution");
 
     atlasPipeline.uniform("projection").set2DOrthographic(
@@ -74,8 +74,8 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
 
     atlasPipeline.uniform("glyph").set1i(1);
 
-    lwvl::VertexArray   vao;
-    lwvl::ArrayBuffer   vbo;
+    lwvl::VertexArray vao;
+    lwvl::ArrayBuffer vbo;
     vao.bind();
     vbo.bind();
     vbo.usage(lwvl::Usage::Static);
@@ -91,7 +91,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
     vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 0);
     vao.attribute(2, GL_FLOAT, 4 * sizeof(float), 2 * sizeof(float));
 
-    const float widthPixel  = 1.0f / decWidth;
+    const float widthPixel = 1.0f / decWidth;
     const float heightPixel = 1.0f / decHeight;
 
     // Viewport is not bound to the framebuffer so we have to restore the previous viewport.
@@ -124,7 +124,7 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
         );
 
 
-        const auto charWidth  = static_cast<float>(font->glyph->bitmap.width);
+        const auto charWidth = static_cast<float>(font->glyph->bitmap.width);
         const auto charHeight = static_cast<float>(font->glyph->bitmap.rows);
 
         glyphScale.set2f(charWidth, charHeight);
@@ -132,10 +132,10 @@ Font::Font(const char *fontFile, uint32_t fontSize) : pixelScale(1.0f / static_c
 
         const auto[row, col] = std::div(static_cast<uint32_t>(c), 16);
 
-        const float texLeft   = (cellSize - charWidth) * 0.5f + static_cast<float>(col) * cellSize;
+        const float texLeft = (cellSize - charWidth) * 0.5f + static_cast<float>(col) * cellSize;
         const float texBottom = (cellSize - charHeight) * 0.5f + static_cast<float>(8 - (row + 1)) * cellSize;
-        const float texRight  = texLeft + charWidth;
-        const float texTop    = texBottom + charHeight;
+        const float texRight = texLeft + charWidth;
+        const float texTop = texBottom + charHeight;
 
         glyphOffset.set2f(texLeft, texBottom);
 

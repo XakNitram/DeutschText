@@ -5,16 +5,16 @@
 namespace lwvl {
     namespace details {
         enum class BufferTarget {
-            Array   = GL_ARRAY_BUFFER,
+            Array = GL_ARRAY_BUFFER,
             Element = GL_ELEMENT_ARRAY_BUFFER,
             Texture = GL_TEXTURE_BUFFER
         };
     }
 
     enum class Usage {
-        Static  = GL_STATIC_DRAW,
+        Static = GL_STATIC_DRAW,
         Dynamic = GL_DYNAMIC_DRAW,
-        Stream  = GL_STREAM_DRAW
+        Stream = GL_STREAM_DRAW
     };
 
 
@@ -43,8 +43,8 @@ namespace lwvl {
         std::shared_ptr<Buffer::ID> m_offsite_id = std::make_shared<Buffer::ID>();
 
         // Local Data
-        uint32_t m_id    = static_cast<uint32_t>(*m_offsite_id);
-        Usage    m_usage = Usage::Dynamic;
+        uint32_t m_id = static_cast<uint32_t>(*m_offsite_id);
+        Usage m_usage = Usage::Dynamic;
 
     public:
         uint32_t id() {
@@ -108,7 +108,7 @@ namespace lwvl {
     };
 
 
-    typedef Buffer<details::BufferTarget::Array>   ArrayBuffer;
+    typedef Buffer<details::BufferTarget::Array> ArrayBuffer;
     typedef Buffer<details::BufferTarget::Element> ElementBuffer;
     typedef Buffer<details::BufferTarget::Texture> TextureBuffer;
 }

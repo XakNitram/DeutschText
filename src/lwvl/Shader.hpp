@@ -62,12 +62,12 @@ namespace lwvl {
 
 
     enum class ShaderType {
-        Vertex   = GL_VERTEX_SHADER,
+        Vertex = GL_VERTEX_SHADER,
         TessCtrl = GL_TESS_CONTROL_SHADER,
         TessEval = GL_TESS_EVALUATION_SHADER,
         Geometry = GL_GEOMETRY_SHADER,
         Fragment = GL_FRAGMENT_SHADER,
-        Compute  = GL_COMPUTE_SHADER
+        Compute = GL_COMPUTE_SHADER
     };
 
 
@@ -128,7 +128,7 @@ namespace lwvl {
 
         static std::string readFile(const std::string &filepath) {
             // need to figure out how to handle errors on this.
-            std::ifstream     file(filepath);
+            std::ifstream file(filepath);
             std::stringstream output_stream;
 
             std::string line;
@@ -147,12 +147,12 @@ namespace lwvl {
 
 
     /* ****** Shader Types ****** */
-    typedef Shader<ShaderType::Vertex>   VertexShader;
+    typedef Shader<ShaderType::Vertex> VertexShader;
     typedef Shader<ShaderType::TessCtrl> TesselationControlShader;
     typedef Shader<ShaderType::TessEval> TesselationEvaluationShader;
     typedef Shader<ShaderType::Geometry> GeometryShader;
     typedef Shader<ShaderType::Fragment> FragmentShader;
-    typedef Shader<ShaderType::Compute>  ComputeShader;
+    typedef Shader<ShaderType::Compute> ComputeShader;
 
 
     /* ****** Shader Program ******

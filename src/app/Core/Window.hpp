@@ -10,6 +10,7 @@ extern constexpr size_t eventStackCapacity = 3;
 struct Config {
     uint32_t width;
     uint32_t height;
+
     bool resizable = false;  // This can be converted to a flag bit type thing when additional features are required.
 };
 
