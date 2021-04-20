@@ -18,5 +18,8 @@ add_library(
 
 target_include_directories(lwvl PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
+# Use precompiled headers.
+target_precompile_headers(lwvl PRIVATE pch.hpp pch.cpp)
+
 target_link_libraries(lwvl PRIVATE OpenGL32)
 target_link_libraries(lwvl PRIVATE glad)
