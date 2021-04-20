@@ -34,6 +34,7 @@ Window::Window(uint32_t width, uint32_t height, const char *title, GLFWmonitor *
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
     //#endif // !NDEBUG
 
+    glfwWindowHint(GLFW_SAMPLES, 16);
     glfwWindowHint(GLFW_RESIZABLE, config.resizable ? GLFW_TRUE : GLFW_FALSE);
 
     /* Create a GLFW window and its OpenGL context. */
